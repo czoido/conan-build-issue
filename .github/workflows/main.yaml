@@ -1,4 +1,4 @@
-name: Build Conan
+name: Build Conan with Matrix
 
 on:
   push:
@@ -9,9 +9,17 @@ on:
 jobs:
   build:
     runs-on: macos-15
+
+    strategy:
+      fail-fast: false
+      matrix:
+        setuptools_version: ['58.0.4', '59.0.0', '59.6.0', '60.0.0', '60.5.0', '60.11.0', '61.0.0', '62.0.0']
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Run build script
+      - name: Run build script for setuptools ${{ matrix.setuptools_version }}
+        env:
+          SETUPTOOLS_VERSION: ${{ matrix.setuptools_version }}
         run: ./build.sh
