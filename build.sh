@@ -24,6 +24,8 @@ rm "${UPSTREAM_TARBALL_NAME}"
 
 cd conan-${CONAN_VERSION}
 
+python --version
+
 pip install -e .
 pip install pyinstaller
 
