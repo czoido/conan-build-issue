@@ -1,4 +1,4 @@
-name: Build Conan with Matrix
+name: Build Conan with Matrix (Pip & Setuptools)
 
 on:
   push:
@@ -11,15 +11,20 @@ jobs:
     runs-on: macos-15
 
     strategy:
-      fail-fast: false
+      fail-fast: false # Keep running other jobs if one fails
       matrix:
-        setuptools_version: [58.0.0, 59.0.1, 60.0.0, 61.1.0, 62.0.0, 63.0.0, 64.0.0, 65.0.1, 66.0.0, 67.0.0, 68.0.0, 69.0.0, 70.0.0, 71.0.0, 72.1.0, 73.0.1, 74.0.0, 75.0.0, 76.0.0, 77.0.1, 78.0.1, 79.0.0, 80.0.0]
+        # Define Pip versions to test
+        pip_version: ['21.2.4', '22.0.4', '23.0.1', '24.0', '25.1'] # Known failing, transitions, recent
+        # Define Setuptools versions to test (shortened list, expand if needed)
+        setuptools_version: ['58.0.4', '60.11.0', '61.0.0', '65.0.1', '69.0.0', '80.0.0']
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Run build script for setuptools ${{ matrix.setuptools_version }}
+      - name: Run build script (pip ${{ matrix.pip_version }}, setuptools ${{ matrix.setuptools_version }})
         env:
+          # Pass both versions from the matrix to the script
+          PIP_VERSION: ${{ matrix.pip_version }}
           SETUPTOOLS_VERSION: ${{ matrix.setuptools_version }}
         run: ./build.sh
