@@ -24,7 +24,7 @@ rm -rf "${PYENV_DIR}" "conan-${CONAN_VERSION}"
 source "${PYENV_DIR}/bin/activate"
 
 python --version
-
+python -m pip install --upgrade pip
 python -m pip install --force-reinstall "setuptools==${SETUPTOOLS_VERSION}"
 
 pip list
